@@ -20,12 +20,14 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import "./global.css";
+import { useUser } from '@/contexts/userContext';
 
 // Keep the splash screen visible while we fetch resources
 SplashScreen.preventAutoHideAsync();
-const isLoggedIn = true;
+
 
 export default function RootLayout() {
+  const {refetch,loading} = useUser()
   const [fontsLoaded, fontError] = useFonts({
     'Quicksand-Light': require('../assets/fonts/Quicksand-Light.ttf'),
     'Quicksand-Regular': require('../assets/fonts/Quicksand-Regular.ttf'),
@@ -35,22 +37,28 @@ export default function RootLayout() {
     Rubik_900Black,
   });
 
+  useEffect(()=>{
+    refetch()
+  },[])
+
   useEffect(() => {
-    if (fontsLoaded || fontError) {
+    if (fontsLoaded || fontError || !loading) {
       SplashScreen.hideAsync();
     }
-  }, [fontsLoaded, fontError]);
+  }, [fontsLoaded, fontError,loading]);
 
   // Don't render until fonts are loaded
-  if (!fontsLoaded && !fontError) {
+  if (!fontsLoaded && !fontError && loading) {
     return null;
   }
 
 
 
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <Stack screenOptions={{headerShown:false}}/>
-    </GestureHandlerRootView>
+
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <Stack screenOptions={{headerShown:false}}/>
+      </GestureHandlerRootView>
+
   );
 }

@@ -1,4 +1,5 @@
 import { images } from '@/constants/images';
+import { useUser } from '@/contexts/userContext';
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 import { router } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
@@ -10,10 +11,16 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 const {height,width}=Dimensions.get("screen")
 
 export default function Success() {
+  const {refetch} = useUser()
   const bottomSheetRef = useRef<BottomSheet>(null);
-  const handleContinue = () => {
+  const handleContinue = async() => {
     // Navigate to main app
-    router.replace('/(pages)/(others)/(tabs_screens)');
+    try{
+      await refetch()
+      router.replace('/(pages)/(others)/(tabs_screens)');
+    }catch(error){
+      console.log(error)
+    }
   };
 
   return (
