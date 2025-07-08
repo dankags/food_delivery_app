@@ -94,7 +94,6 @@ export default function AuthLayout({ children, title, subtitle,setActiveTab,acti
     <SafeAreaView style={{flex:1}}>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}
         className=" flex-1 "
       >
      

@@ -1,4 +1,5 @@
 import { useUser } from "@/contexts/userContext"
+import { fetchAPI } from "@/lib/fetch"
 import { signInUser } from "@/lib/user.action"
 import { router } from "expo-router"
 import { memo, useCallback, useState, useTransition } from "react"
@@ -18,6 +19,7 @@ const SignInForm=memo(({setActiveTab}:{setActiveTab:(tab:'signin' | 'signup')=>v
     const [isPending,startTransition] = useTransition()
   
     const handleSignIn = useCallback(async () => {
+      console.log('form',form)
       if (!form.email || !form.password) {
         Alert.alert('Error', 'Please fill in all fields');
         return;
@@ -26,7 +28,11 @@ const SignInForm=memo(({setActiveTab}:{setActiveTab:(tab:'signin' | 'signup')=>v
       startTransition(async()=>{
         try {
           // TODO: Implement actual sign-in logic
-          const userData=await signInUser(form)
+          const userData=await fetchAPI('/api/auth/sign_in',{
+            method:'POST',
+            body:JSON.stringify(form)
+          })
+          console.log('userData',userData)
           if(userData.loginSuccess){
             await refetch()
             router.replace('/(pages)/(others)/(tabs_screens)')

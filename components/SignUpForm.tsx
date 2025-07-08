@@ -1,3 +1,4 @@
+import { fetchAPI } from "@/lib/fetch";
 import { signUpUser } from "@/lib/user.action";
 import { router } from "expo-router";
 import { memo, useState, useTransition } from "react";
@@ -8,7 +9,6 @@ type SignUpFormInput={
     email:string,
     password:string,
     confirmPassword:string,
-    phone:string,
   }
 
 const SignUpForm=memo(({setActiveTab}:{setActiveTab:(tab:'signin' | 'signup')=>void})=>{
@@ -17,52 +17,42 @@ const SignUpForm=memo(({setActiveTab}:{setActiveTab:(tab:'signin' | 'signup')=>v
       email:'',
       password:'',
       confirmPassword:'',
-      phone:'',
     })
+    const [error,setError] = useState<string | null>(null)
     const [isPending,startTransition] = useTransition()
   
     const handleSignUp = async () => {
-      if (!form.fullName || !form.email || !form.password || !form.confirmPassword || !form.phone) {
-        Alert.alert('Error', 'Please fill in all fields');
+      if (!form.fullName || !form.email || !form.password || !form.confirmPassword) {
+        setError('Please fill in all fields')
         return;
       }
   
       if (form.password !== form.confirmPassword) {
-        Alert.alert('Error', 'Passwords do not match');
+        setError( 'Passwords do not match');
         return;
       }
   
       if (form.password.length < 6) {
-        Alert.alert('Error', 'Password must be at least 6 characters long');
+        setError('Password must be at least 6 characters long');
         return;
       }
   
       startTransition(async()=>{
         try {
           const {confirmPassword,...userData}=form
-          const {session,user,error} = await signUpUser(userData)
+          const {session,user,error} = await fetchAPI("/api/auth/sign_Up",{
+            method:"POST",
+            body:JSON.stringify(userData)
+          })
           if(user && session){
             router.push('/auth/success')
           }else{
-            Alert.alert('Error', error || 'Failed to sign up. Please try again.');
+            setError(error || 'Failed to sign up. Please try again.')
           }
-        } catch (error) {
-          Alert.alert('Error', 'Failed to sign up. Please try again.');
+        } catch (error:any) {
+          setError(error.message)
         }
       })
-      try {
-        // TODO: Implement actual sign-up logic
-        console.log('Signing up with:', { form });
-        
-        // Simulate API call
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        
-        // Navigate to success page or main app
-        router.push('/auth/success');
-      } catch (error) {
-        Alert.alert('Error', 'Failed to sign up. Please try again.');
-      } finally {
-      }
     };
   
     const handleSignIn = () => {
@@ -74,6 +64,7 @@ const SignUpForm=memo(({setActiveTab}:{setActiveTab:(tab:'signin' | 'signup')=>v
     
     
           <ScrollView showsVerticalScrollIndicator={false}>
+            {error && <Text className="text-red-500 text-center mb-4">{error}</Text>}
             <View className="mb-5">
               <Text className="text-base font-semibold text-gray-700 mb-2">
                 Full Name
@@ -113,6 +104,21 @@ const SignUpForm=memo(({setActiveTab}:{setActiveTab:(tab:'signin' | 'signup')=>v
                 placeholder="Create a password"
                 value={form.password}
                 onChangeText={(text)=>setForm({...form,password:text})}
+                secureTextEntry
+                autoCapitalize="none"
+                autoCorrect={false}
+              />
+            </View>
+
+            <View className="mb-5">
+              <Text className="text-base font-semibold text-gray-700 mb-2">
+                Confirm Password
+              </Text>
+              <TextInput
+                className="border border-gray-300 rounded-xl px-4 py-3.5 text-base bg-gray-50"
+                placeholder="Confirm password"
+                value={form.confirmPassword}
+                onChangeText={(text)=>setForm({...form,confirmPassword:text})}
                 secureTextEntry
                 autoCapitalize="none"
                 autoCorrect={false}

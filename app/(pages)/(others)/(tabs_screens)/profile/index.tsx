@@ -5,6 +5,8 @@ import { NativeStackHeaderProps } from '@react-navigation/native-stack'
 import CustomIcon from '@/components/CustomIcon'
 import { images } from '@/constants/images'
 import { ScrollView } from 'react-native-gesture-handler'
+import { fetchAPI } from '@/lib/fetch'
+import { useUser } from '@/contexts/userContext'
 
 const ProfileHeader = ({props}:{props:NativeStackHeaderProps}) => {
     return(
@@ -28,6 +30,25 @@ const ProfileHeader = ({props}:{props:NativeStackHeaderProps}) => {
 }
 
 const Profile = () => {
+  const {refetch} = useUser()
+  const logout = async () => {
+    try{
+      const response = await fetchAPI('/api/auth/logout', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    console.log(response)
+    if(response.success){
+      await refetch()
+      router.replace('/(pages)/auth/(userAuth)')
+    }
+  }catch(error){
+      console.log(error)
+    }
+  };
+
     return(
         <SafeAreaView style={{flex:1,backgroundColor:"#fafafa",gap:10}}>
             <StatusBar barStyle="dark-content" backgroundColor='#fafafa' />
@@ -100,7 +121,7 @@ const Profile = () => {
             <TouchableOpacity className='flex-row items-center justify-center gap-2 border-2 border-primary bg-primary/5 rounded-full p-3'>
               <Text className='text-text-primary text-lg font-quicksand-bold font-bold'>Edit Profile</Text>
             </TouchableOpacity>
-            <TouchableOpacity className='flex-row items-center justify-center gap-2 border-2 border-[#F14141] bg-[#F141410D] rounded-full p-3'>
+            <TouchableOpacity onPress={() => logout()} className='flex-row items-center justify-center gap-2 border-2 border-[#F14141] bg-[#F141410D] rounded-full p-3'>
               <CustomIcon iconLibraryType='Ionicons' iconName='log-out-outline' size={26} color='#F14141' />
               <Text className='text-[#F14141] text-lg font-quicksand-bold font-bold'>Logout</Text>
             </TouchableOpacity>

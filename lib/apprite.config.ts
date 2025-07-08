@@ -1,9 +1,9 @@
-"use server"
-import "server-only"
+// "use server"
 import { Account, Avatars, Client, Databases, Storage } from "react-native-appwrite"
 
+
 export const config = {
- platform:"com.dankags.foodDeliveryApp",
+ platform:"com.dankags.foodordering",
  endpoint:process.env.EXPO_PUBLIC_APPWRITE_ENDPOINT,
  projectId:process.env.EXPO_PUBLIC_APPWRITE_PROJECT_ID,
  databaseId:process.env.APPWRITE_DATABASE_ID,
@@ -15,7 +15,6 @@ export const config = {
   reviewsCollectionId: process.env.APPWRITE_REVIEWS_COLLECTION_ID,
   paymentsCollectionId: process.env.APPWRITE_PAYMENTS_COLLECTION_ID,
 
-  
  }
 
  export const client = new Client();

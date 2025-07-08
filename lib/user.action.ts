@@ -1,13 +1,13 @@
-"use server"
-import "server-only"
-import { account,avatar,config, databases, storage } from "./apprite.config"
+
 import { ID } from "react-native-appwrite"
+// import "server-only"
+import { account, avatar, config, databases } from "../lib/apprite.config"
 
 
 //  Sign Up Users
 export const signUpUser = async (user:User) => {
     try {
-        if(!user.email || !user.password  || !user.phone || !user.fullName){
+        if(!user.email || !user.password  || !user.fullName){
             throw new Error("All fields are required")
         }
      const userData = await account.create(ID.unique(),user.email,user.password,user.fullName)
@@ -17,7 +17,6 @@ export const signUpUser = async (user:User) => {
       const newUser = await databases.createDocument(config.databaseId!,config.usersCollectionId!,userData.$id,{
         email:user.email,
         fullName:user.fullName,
-        phone:user.phone,
         avatar:avatar.getInitials(user.fullName),
       })
       if(!newUser){
@@ -30,7 +29,7 @@ export const signUpUser = async (user:User) => {
     if(!session){
         throw new Error("Failed to create session")
     }
-   
+   console.log(session,newUser)
       return {session:session,user:newUser,error:null}
     } catch (error:any) {
         console.log(error)
@@ -68,7 +67,6 @@ export const getCurrentUser = async () => {
         }
         return res
     } catch (error) {
-        console.error(error)
         return null
     }
 }
