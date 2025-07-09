@@ -1,4 +1,4 @@
-import { databases } from "@/lib/apprite.config";
+import { config, databases } from "@/lib/apprite.config";
 import { Query } from "react-native-appwrite";
 
 // delete many categories api
@@ -6,8 +6,8 @@ export async function DELETE(req: Request) {
     try {
       const body = await req.json();
       const categories:string[] = body
-      const databaseId = process.env.APPWRITE_DATABASE_ID;
-      const collectionId = process.env.APPWRITE_CATEGORY_COLLECTION_ID;
+      const databaseId = config.databaseId ;
+    const collectionId = config.categoriesCollectionId ;
   
       if(!databaseId || !collectionId){
         return new Response(

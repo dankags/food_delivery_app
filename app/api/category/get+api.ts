@@ -1,11 +1,11 @@
-import { databases } from "@/lib/apprite.config";
+import { config, databases } from "@/lib/apprite.config";
 import { Query } from "react-native-appwrite";
 
 // Get all categories API
 export async function GET(req: Request) {
   try {
-    const databaseId = process.env.APPWRITE_DATABASE_ID;
-    const collectionId = process.env.APPWRITE_CATEGORY_COLLECTION_ID;
+    const databaseId = config.databaseId ;
+    const collectionId = config.categoriesCollectionId ;
 
     if (!databaseId || !collectionId) {
       return new Response(
@@ -50,8 +50,8 @@ export async function POST(req: Request) {
       );
     }
 
-    const databaseId = process.env.APPWRITE_DATABASE_ID;
-    const collectionId = process.env.APPWRITE_CATEGORY_COLLECTION_ID;
+    const databaseId = config.databaseId ;
+    const collectionId = config.categoriesCollectionId ;
 
     if (!databaseId || !collectionId) {
       return new Response(

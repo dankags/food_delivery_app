@@ -1,5 +1,5 @@
 // get category by id api
-import { databases } from "@/lib/apprite.config";
+import { config, databases } from "@/lib/apprite.config";
 
 export async function GET(req: Request, { params }: { params: { id: string } }) {
   try {
@@ -13,8 +13,8 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
     }
 
     // Replace these with your actual database and collection IDs
-    const databaseId = process.env.APPWRITE_DATABASE_ID ;
-    const collectionId = process.env.APPWRITE_CATEGORY_COLLECTION_ID ;
+    const databaseId = config.databaseId ;
+    const collectionId = config.categoriesCollectionId ;
 
     if(!databaseId || !collectionId){
       return new Response(
@@ -50,8 +50,8 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
       );
     }
 
-    const databaseId = process.env.APPWRITE_DATABASE_ID;
-    const collectionId = process.env.APPWRITE_CATEGORY_COLLECTION_ID;
+    const databaseId = config.databaseId ;
+    const collectionId = config.categoriesCollectionId ;
 
     if (!databaseId || !collectionId) {
       return new Response(
@@ -109,8 +109,8 @@ export async function DELETE(req: Request, { params }: { params: { id: string } 
       );
     }
 
-    const databaseId = process.env.APPWRITE_DATABASE_ID;
-    const collectionId = process.env.APPWRITE_CATEGORY_COLLECTION_ID;
+    const databaseId = config.databaseId ;
+    const collectionId = config.categoriesCollectionId ;
 
     if (!databaseId || !collectionId) {
       return new Response(

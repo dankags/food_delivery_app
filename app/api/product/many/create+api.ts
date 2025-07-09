@@ -1,4 +1,4 @@
-import { databases } from "@/lib/apprite.config";
+import { config, databases } from "@/lib/apprite.config";
 import { ID } from "react-native-appwrite";
 
 // Create many products
@@ -13,8 +13,8 @@ export async function PUT(req: Request) {
         );
       }
   
-      const databaseId = process.env.APPWRITE_DATABASE_ID;
-      const collectionId = process.env.APPWRITE_PRODUCT_COLLECTION_ID;
+      const databaseId = config.databaseId ;
+      const collectionId = config.productsCollectionId ;
   
       if (!databaseId || !collectionId) {
         return new Response(

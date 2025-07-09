@@ -1,5 +1,5 @@
 // create category api
-import { databases } from "@/lib/apprite.config";
+import { config, databases } from "@/lib/apprite.config";
 import { ID, Query } from "react-native-appwrite";
 
 export async function POST(req: Request) {
@@ -15,8 +15,8 @@ export async function POST(req: Request) {
       );
     }
 
-    const databaseId = process.env.APPWRITE_DATABASE_ID;
-    const collectionId = process.env.APPWRITE_CATEGORY_COLLECTION_ID;
+    const databaseId = config.databaseId ;
+    const collectionId = config.categoriesCollectionId ;
 
     if (!databaseId || !collectionId) {
       return new Response(

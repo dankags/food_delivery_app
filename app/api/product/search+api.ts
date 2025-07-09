@@ -1,4 +1,4 @@
-import { databases } from '@/lib/apprite.config';
+import { config, databases } from '@/lib/apprite.config';
 import { Query } from 'react-native-appwrite';
 
 
@@ -23,8 +23,8 @@ try{
     if(category&&category.length>0){
         queries.push(Query.equal("categories",category))
         const fetchedCategoriesWithRelatedProducts=await databases.listDocuments(
-            process.env.DATABASE_ID!,
-            process.env.CATEGORY_COLLECTION_ID!,
+            config.databaseId!,
+            config.categoriesCollectionId!,
             [...queries]
         )
 
@@ -71,8 +71,8 @@ try{
         
 
         const fetchedProducts=await databases.listDocuments(
-            process.env.DATABASE_ID!,
-            process.env.PRODUCT_COLLECTION_ID!,
+            config.databaseId!,
+            config.productsCollectionId!,
             [...queries]
         )
         if(fetchedProducts.documents.length===0){
