@@ -22,7 +22,7 @@ const Tab=({name,href,children,notification}:TabProps)=>{
     }
   }, [href])
   return(
-    <Pressable className='justify-center items-center relative' style={{flex:1}} onPress={navigate}>
+    <Pressable className='justify-center items-center relative pb-safe' style={{flex:1}} onPress={navigate}>
       {children}
       {notification && (
         <View className={`absolute -top-1 left-1/2 translate-x-1/2 ${notification>99?"px-1 py1":"w-5 h-5"} bg-primary justify-center items-center rounded-full`}>
