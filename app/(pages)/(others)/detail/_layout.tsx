@@ -4,7 +4,7 @@ export default function DetailLayout() {
   return (
     <Stack
       screenOptions={{
-        headerShown: false,
+        headerShown: true,
       }}
     />
   )

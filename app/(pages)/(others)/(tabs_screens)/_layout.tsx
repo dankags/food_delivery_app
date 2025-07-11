@@ -55,6 +55,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
+          headerShown:true,
           tabBarButton:({href})=>(
             <Tab name="Home" href={href}>
               <CustomIcon iconLibraryType="MaterialCommunityIcons" iconName="home" size={24} color={pathName==="/"?"#FE8C00":"#878787"} />
